@@ -1,6 +1,5 @@
 import React from 'react'
 
-
 export default function Categories({ items, onClickItem }) {
   const [activeItem, setActiveItem] = React.useState(null)
 
