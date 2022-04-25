@@ -1,0 +1,15 @@
+[33mcommit 7343bd32fcfe01688163a20c3f34e641c0646688[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m
+Author: Dima Yanovskji <86802309+Defisto7@users.noreply.github.com>
+Date:   Mon Apr 25 12:35:30 2022 +0300
+
+    Master
+    
+    Add pizzaLoading
+
+[33mcommit 6ee52ca2c2c38f983b95d75ab3f92216a9a3607e[m
+Author: Dima Yanovskji <86802309+Defisto7@users.noreply.github.com>
+Date:   Sat Apr 23 21:16:04 2022 +0300
+
+    Master
+    
+    removed redundant renders
