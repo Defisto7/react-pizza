@@ -2,7 +2,7 @@ import React from 'react'
 import {Categories, SortPopup, PizzaBlock, LoadingBlock} from '../components';
 import { useSelector, useDispatch } from 'react-redux'
 
-import {setCategory} from '../redux/actions/filters'
+import {setCategory, setSortBy } from '../redux/actions/filters'
 import { fetchPizzas } from '../redux/actions/pizzas'
 
 const categotyNames = [
@@ -14,37 +14,51 @@ const categotyNames = [
   ]
 
 const sortItems = [
-  {name: 'популярности', type: 'popylar'},
-  {name: 'цена', type: 'price'},
-  {name: 'алфавит', type: 'alphabet'}
+  {name: 'популярности', type: 'popylar', order: 'desc'},
+  {name: 'цена', type: 'price', order: 'desc'},
+  {name: 'алфавит', type: 'name', order: 'asc'}
   ]
 
 function Home() {
   const dispatch = useDispatch();
   const items = useSelector(({ pizzas }) => pizzas.items);
   const isLoaded = useSelector(({ pizzas }) => pizzas.isLoaded);
+  const { category, sortBy } = useSelector(({ filters }) => filters);
   
   React.useEffect(() => {
-      dispatch(fetchPizzas())
-  }, []);
+      dispatch(fetchPizzas(sortBy, category))
+  }, [category, sortBy]);
 
   const onSelectCategory = React.useCallback( index => {
     dispatch(setCategory(index));
+  }, []);
+
+  const onSelectSortType = React.useCallback( type => {
+    dispatch(setSortBy(type));
   }, []);
 
 
   return (
     <div className="container">
           <div className="content__top">
-            <Categories onClickItem={onSelectCategory} items={categotyNames}/>
-            <SortPopup items={sortItems}/>
+            <Categories 
+              activeCategory={category} 
+              onClickItem={onSelectCategory} 
+              items={categotyNames} 
+            />
+            <SortPopup 
+              activeSortType={sortBy.type} 
+              items={sortItems} 
+              onClickSortType={onSelectSortType} 
+            />
           </div>
           <h2 className="content__title">Все пиццы</h2>
           <div className="content__items">
             {
               isLoaded 
               ? items.map(obj => <PizzaBlock key={obj.id} isLoading={true} {...obj}/>) 
-              : Array(12).fill(<LoadingBlock />)
+              : Array(12).fill(0)
+              .map((_, index) => (<LoadingBlock key={index}/>))
             }
            
 
