@@ -1,13 +1,14 @@
 import React from 'react'
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import Button from '../Button';
 
-function PizzaBlock({ name, imageUrl, price, types, sizes, isLoading }) {
+function PizzaBlock({ id, name, imageUrl, price, types, sizes, onClickAddPizza, addedCount }) {
   
   const avalibleTypes = ['тонкое', 'традиционное'];
   const avalibleSizes = [26, 30, 40];
   const [activeType, setActiveType] = React.useState(types[0]);
-  const [activeSize, setActiveSize] = React.useState(sizes[0]);
+  const [activeSize, setActiveSize] = React.useState(0);
 
   const onSelectType = (index) => {
     setActiveType(index)
@@ -15,6 +16,18 @@ function PizzaBlock({ name, imageUrl, price, types, sizes, isLoading }) {
 
   const onSelectSize = (index) => {
     setActiveSize(index)
+  }
+
+  const onAddPizza = () => {
+    const obj = {
+      id,
+      name,
+      imageUrl,
+      price,
+      size: avalibleSizes[activeSize],
+      type: avalibleTypes[activeType]
+    };
+    onClickAddPizza(obj);
   }
 
   return (
@@ -52,7 +65,8 @@ function PizzaBlock({ name, imageUrl, price, types, sizes, isLoading }) {
               </div>
               <div className="pizza-block__bottom">
                 <div className="pizza-block__price">от {price} ₴</div>
-                <div className="button button--outline button--add">
+                <Button onClick={onAddPizza} 
+                        className="button-add" outline>
                   <svg
                     width="12"
                     height="12"
@@ -65,8 +79,8 @@ function PizzaBlock({ name, imageUrl, price, types, sizes, isLoading }) {
                     />
                   </svg>
                   <span>Добавить</span>
-                  <i>2</i>
-                </div>
+                  {addedCount && <i>{addedCount}</i>}
+                </Button>
               </div>
             </div>
   )
@@ -78,7 +92,7 @@ PizzaBlock.propTypes = {
   price: PropTypes.number,
   types: PropTypes.arrayOf(PropTypes.number),
   sizes: PropTypes.arrayOf(PropTypes.number),
-  onClickAddPizza: PropTypes.func,
+  onAddPizza: PropTypes.func,
   addedCount: PropTypes.number,
 };
 
