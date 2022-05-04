@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 import { CartItem } from '../components'
 import cartEmptyImage from '../assets/img/empty-cart.png'
-import { clearCart, removeCartItem } from '../redux/actions/cart'
+import { clearCart, removeCartItem, plusItem, minusItem } from '../redux/actions/cart'
 
 
 function Cart() {
@@ -27,6 +27,14 @@ function Cart() {
     if (window.confirm('Вы действительно хотите удалить?')){
       dispatch(removeCartItem(id));
     }
+  }
+
+  const onPlusItem = (id) => {
+    dispatch(plusItem(id));
+  }
+
+  const onMinusItem = (id) => {
+    dispatch(minusItem(id));
   }
 
   return (
@@ -56,14 +64,16 @@ function Cart() {
           {
             addedPizzas.map(obj => (
             <CartItem 
-            id={obj.id}
-            name={obj.name} 
-            type={obj.type} 
-            size={obj.size} 
-            totalPrice={items[obj.id].totalPrice}
-            totalCount={items[obj.id].items.length}
-            onRemove={onRemoveItem}
-            
+              key={obj.id}
+              id={obj.id}
+              name={obj.name} 
+              type={obj.type} 
+              size={obj.size} 
+              totalPrice={items[obj.id].totalPrice}
+              totalCount={items[obj.id].items.length}
+              onRemove={onRemoveItem}
+              onMinus={onMinusItem}
+              onPlus={onPlusItem}
             />
             ))
           }
@@ -80,7 +90,9 @@ function Cart() {
 <path d="M7 13L1 6.93015L6.86175 1" stroke="#D3D3D3" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
 </svg>
 
-              <span>Вернуться назад</span>
+    <Link to="/">
+      <span>Вернуться назад</span>
+    </Link>
             </a>
             <div className="button pay-btn">
               <span>Оплатить сейчас</span>
@@ -89,7 +101,7 @@ function Cart() {
         </div>
       </div> :    <div className="container container--cart">
           <div className="cart cart--empty">
-            <h2>Корзина пустая <icon>😕</icon></h2>
+            <h2>Корзина пустая <i>😕</i></h2>
             <p>
               Вероятней всего, вы не заказывали ещё пиццу.<br />
               Для того, чтобы заказать пиццу, перейди на главную страницу.
